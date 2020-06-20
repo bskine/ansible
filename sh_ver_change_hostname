@@ -1,0 +1,29 @@
+---
+
+- name: My First Playbook
+  connection: network_cli
+  hosts: all
+  gather_facts: no
+
+  tasks:
+
+    - name: Gather hostname and IOS version information
+      ios_facts:
+        gather_network_resources: interfaces
+
+    - name: Display hostname and version
+      debug:
+        msg: "For hostname {{ ansible_net_hostname }} the IOS version is {{ ansible_net_version }}"
+
+    - name: Update the hostname
+      ios_config:
+        commands:
+          hostname alp-sw2-ansible
+
+    - name: Gather updated hostname
+      ios_facts:
+        gather_subset: all
+
+    - name: Display hostname and version
+      debug:
+        msg: "For hostname {{ ansible_net_hostname }} the IOS version is {{ ansible_net_version }}"
